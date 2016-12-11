@@ -52,6 +52,8 @@ namespace SlogWeb {
 
             app.UseStaticFiles();
 
+            app.UseIdentity();
+
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",
