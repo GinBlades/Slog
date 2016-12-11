@@ -34,7 +34,7 @@ namespace SlogWeb.Controllers {
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null) {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid) {
-                var result = await SignInByUserNameOrEmail(model);
+                var result = await SignInByUserNameOrEmailAsync(model);
                 if (result.Succeeded) {
                     return RedirectToLocal(returnUrl);
                 } else {
@@ -88,14 +88,21 @@ namespace SlogWeb.Controllers {
             }
         }
 
-        private async Task<Microsoft.AspNetCore.Identity.SignInResult> SignInByUserNameOrEmail(LoginViewModel model) {
+        private async Task<Microsoft.AspNetCore.Identity.SignInResult> SignInByUserNameOrEmailAsync(LoginViewModel model) {
             if (model.EmailOrUserName.Contains("@")) {
                 var user = await _userManager.FindByEmailAsync(model.EmailOrUserName);
-                return await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (user != null) {
+                    return await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+                } else {
+                    return await SignInByFieldAsync(model);
+                }
             } else {
-                return await _signInManager.PasswordSignInAsync(
-                    model.EmailOrUserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                return await SignInByFieldAsync(model);
             }
+        }
+
+        private async Task<Microsoft.AspNetCore.Identity.SignInResult> SignInByFieldAsync(LoginViewModel model) {
+            return await _signInManager.PasswordSignInAsync(model.EmailOrUserName, model.Password, model.RememberMe, lockoutOnFailure: false);
         }
     }
 }

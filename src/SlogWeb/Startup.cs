@@ -12,6 +12,7 @@ using SlogWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using SlogWeb.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using SlogWeb.Services;
 
 namespace SlogWeb {
     public class Startup {
@@ -31,17 +32,22 @@ namespace SlogWeb {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
+            services.AddOptions();
+            services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddSingleton<DbSeeder>();
+
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory) {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DbSeeder dbSeeder) {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -59,6 +65,12 @@ namespace SlogWeb {
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            try {
+                dbSeeder.SeedAsync().Wait();
+            } catch (AggregateException ex) {
+                throw new Exception(ex.ToString());
+            }
         }
     }
 }
