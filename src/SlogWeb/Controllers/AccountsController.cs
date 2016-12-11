@@ -23,6 +23,30 @@ namespace SlogWeb.Controllers {
 
         [HttpGet]
         [AllowAnonymous]
+        public IActionResult Login(string returnUrl = null) {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null) {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid) {
+                var result = await SignInByUserNameOrEmail(model);
+                if (result.Succeeded) {
+                    return RedirectToLocal(returnUrl);
+                } else {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register() {
             return View();
         }
@@ -32,7 +56,7 @@ namespace SlogWeb.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model) {
             if (ModelState.IsValid) {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded) {
                     await _signInManager.SignInAsync(user, isPersistent: false);
@@ -41,6 +65,13 @@ namespace SlogWeb.Controllers {
                 AddErrors(result);
             }
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogOff() {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         private void AddErrors(IdentityResult result) {
@@ -54,6 +85,16 @@ namespace SlogWeb.Controllers {
                 return Redirect(returnUrl);
             } else {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+        }
+
+        private async Task<Microsoft.AspNetCore.Identity.SignInResult> SignInByUserNameOrEmail(LoginViewModel model) {
+            if (model.EmailOrUserName.Contains("@")) {
+                var user = await _userManager.FindByEmailAsync(model.EmailOrUserName);
+                return await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+            } else {
+                return await _signInManager.PasswordSignInAsync(
+                    model.EmailOrUserName, model.Password, model.RememberMe, lockoutOnFailure: false);
             }
         }
     }

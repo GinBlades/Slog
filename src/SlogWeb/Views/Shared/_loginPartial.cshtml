@@ -5,9 +5,13 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @if (SignInManager.IsSignedIn(User)) {
-    <li><a href="#">Sign Out</a></li>
+    <li>
+        <form asp-controller="Accounts" asp-action="LogOff" method="post">
+            <button type="submit">Sign Out</button>
+        </form>
+    </li>
 
 } else {
     <li><a asp-controller="Accounts" asp-action="Register">Register</a></li>
-    <li><a href="#">Sign In</a></li>
+    <li><a asp-controller="Accounts" asp-action="Login">Sign In</a></li>
 }
