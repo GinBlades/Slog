@@ -1,4 +1,4 @@
-﻿using CoreTemplateWeb.Controllers;
+﻿using SlogWeb.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

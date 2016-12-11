@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using CoreTemplateWeb.Data;
+using SlogWeb.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoreTemplateWeb {
+namespace SlogWeb {
     public class Startup {
         public IConfigurationRoot Configuration { get; }
 
