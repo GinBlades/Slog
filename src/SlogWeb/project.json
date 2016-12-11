@@ -1,8 +1,10 @@
 {
   "userSecretsId": "aspnet-Slog-68ade528-78e1-4af6-9fe7-4c8972e2291a",
   "dependencies": {
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
     "Microsoft.AspNetCore.Diagnostics": "1.1.0",
     "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.1.0",
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0",
     "Microsoft.AspNetCore.Mvc": "1.1.0",
     "Microsoft.AspNetCore.Routing": "1.1.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
@@ -22,7 +24,10 @@
     "Npgsql.EntityFrameworkCore.PostgreSQL": "1.1.0",
     "Npgsql.EntityFrameworkCore.PostgreSQL.Design": "1.1.0"
   },
-
+  "Microsoft.AspNetCore.Razor.Tools": {
+    "version": "1.1.0-preview4-final",
+    "type": "build"
+  },
   "tools": {
     "Microsoft.AspNetCore.Razor.Tools": "1.1.0-preview4-final",
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final",

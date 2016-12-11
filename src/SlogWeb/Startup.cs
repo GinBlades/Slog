@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using SlogWeb.Data;
 using Microsoft.EntityFrameworkCore;
+using SlogWeb.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SlogWeb {
     public class Startup {
@@ -31,6 +33,10 @@ namespace SlogWeb {
         public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddMvc();
         }
 

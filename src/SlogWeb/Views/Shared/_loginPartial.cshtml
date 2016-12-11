@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SlogWeb.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User)) {
+    <li><a href="#">Sign Out</a></li>
+
+} else {
+    <li><a href="#">Register</a></li>
+    <li><a href="#">Sign In</a></li>
+}

@@ -2,10 +2,19 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - The Blog</title>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li>
+                <a asp-controller="Home" asp-action="Index">Home</a>
+                @await Html.PartialAsync("_LoginPartial")
+            </li>
+        </ul>
+    </nav>
     <div>
         @RenderBody()
     </div>
