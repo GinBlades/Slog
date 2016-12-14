@@ -11,6 +11,8 @@
         <ul>
             <li>
                 <a asp-controller="Home" asp-action="Index">Home</a>
+                <a asp-controller="Posts" asp-action="Index">Posts</a>
+                <a asp-controller="Posts" asp-action="Create">New Post</a>
                 @await Html.PartialAsync("_LoginPartial")
             </li>
         </ul>

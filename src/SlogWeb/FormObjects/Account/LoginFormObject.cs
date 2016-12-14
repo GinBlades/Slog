@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SlogWeb.ViewModels.Accounts {
-    public class LoginViewModel {
+namespace SlogWeb.FormObjects.Account {
+    public class LoginFormObject {
         [Required]
         [Display(Name = "Email or Username")]
         public string EmailOrUserName { get; set; }

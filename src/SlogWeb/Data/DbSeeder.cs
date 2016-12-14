@@ -28,14 +28,15 @@ namespace SlogWeb.Data {
         public async Task SeedAsync() {
             _dbContext.Database.EnsureCreated();
 
-            await ClearDb();
+            // Clear database when needed.
+            // await ClearDbAsync();
 
             if (await _dbContext.Users.CountAsync() == 0) {
                 await CreateUsersAsync();
             }
         }
 
-        private async Task ClearDb() {
+        private async Task ClearDbAsync() {
             foreach (var user in _dbContext.Users.ToList()) {
                 _dbContext.Users.Remove(user);
             }

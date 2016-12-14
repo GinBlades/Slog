@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using SlogWeb.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using SlogWeb.Services;
+using AutoMapper;
 
 namespace SlogWeb {
     public class Startup {
@@ -41,6 +42,7 @@ namespace SlogWeb {
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAutoMapper();
             services.AddSingleton<DbSeeder>();
 
             services.AddMvc();

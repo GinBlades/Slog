@@ -6,17 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using SlogWeb.Models;
 using Microsoft.AspNetCore.Authorization;
-using SlogWeb.ViewModels.Accounts;
+using SlogWeb.FormObjects.Account;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SlogWeb.Controllers {
     [Authorize]
-    public class AccountsController : Controller {
+    public class AccountController : Controller {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -31,7 +31,7 @@ namespace SlogWeb.Controllers {
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null) {
+        public async Task<IActionResult> Login(LoginFormObject model, string returnUrl = null) {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid) {
                 var result = await SignInByUserNameOrEmailAsync(model);
@@ -54,7 +54,7 @@ namespace SlogWeb.Controllers {
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model) {
+        public async Task<IActionResult> Register(RegisterFormObject model) {
             if (ModelState.IsValid) {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -88,7 +88,7 @@ namespace SlogWeb.Controllers {
             }
         }
 
-        private async Task<Microsoft.AspNetCore.Identity.SignInResult> SignInByUserNameOrEmailAsync(LoginViewModel model) {
+        private async Task<Microsoft.AspNetCore.Identity.SignInResult> SignInByUserNameOrEmailAsync(LoginFormObject model) {
             if (model.EmailOrUserName.Contains("@")) {
                 var user = await _userManager.FindByEmailAsync(model.EmailOrUserName);
                 if (user != null) {
@@ -101,7 +101,7 @@ namespace SlogWeb.Controllers {
             }
         }
 
-        private async Task<Microsoft.AspNetCore.Identity.SignInResult> SignInByFieldAsync(LoginViewModel model) {
+        private async Task<Microsoft.AspNetCore.Identity.SignInResult> SignInByFieldAsync(LoginFormObject model) {
             return await _signInManager.PasswordSignInAsync(model.EmailOrUserName, model.Password, model.RememberMe, lockoutOnFailure: false);
         }
     }

@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SlogWeb.ViewModels.Accounts {
-    public class RegisterViewModel {
+namespace SlogWeb.FormObjects.Account {
+    public class RegisterFormObject {
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

@@ -1,9 +1,9 @@
-﻿@model LoginViewModel
+﻿@model LoginFormObject
 @{ 
     ViewData["Title"] = "Sign In";
 }
 
-<form asp-controller="Accounts" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+<form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
     <h3>Sign in.</h3>
     <div asp-validation-summary="All"></div>
     <ol>

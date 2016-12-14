@@ -1,0 +1,17 @@
+﻿@model PostFormObject
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <h4>Post</h4>
+    @Html.EditorForModel()
+    <input type="submit" value="Create" />
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
