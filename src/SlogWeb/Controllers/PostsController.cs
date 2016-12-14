@@ -111,18 +111,9 @@ namespace SlogWeb.Controllers {
         private bool PostExists(int id) {
             return _context.Posts.Any(e => e.Id == id);
         }
-
-        // There is a problem with the 'UserManager.Store' being empty, so I also check the database.
+        
         private async Task<ApplicationUser> GetCurrentUserAsync() {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) {
-                var username = HttpContext.User?.Identity?.Name;
-                if (username == null) {
-                    return null;
-                }
-                user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            }
-            return user;
+            return await _userManager.GetUserAsync(HttpContext.User);
         }
     }
 }
