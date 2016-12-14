@@ -65,7 +65,20 @@ namespace SlogWeb {
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller}",
+                    defaults: new { controller = "Home", action = "Index" });
+                routes.MapRoute(
+                    name: "new_route",
+                    template: "{controller}/new",
+                    defaults: new { action = "Create" }
+                );
+                routes.MapRoute(
+                    name: "details",
+                    template: "{controller}/{id}",
+                    defaults: new { action = "Details" });
+                routes.MapRoute(
+                    name: "other_actions",
+                    template: "{controller}/{id}/{action}");
             });
 
             try {

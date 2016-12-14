@@ -31,6 +31,7 @@ namespace SlogWeb.Controllers {
             return View(await _context.Posts.ToListAsync());
         }
 
+        [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id) {
             if (id == null) {
@@ -73,15 +74,14 @@ namespace SlogWeb.Controllers {
             if (post == null) {
                 return NotFound();
             }
-            return View(post);
+            return View(_mapper.Map<Post, PostFormObject>(post));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Content,PublishDate,Title")] Post post) {
-            if (id != post.Id) {
-                return NotFound();
-            }
+        public async Task<IActionResult> Edit(int id, PostFormObject pfo) {
+            var post = _mapper.Map<PostFormObject, Post>(pfo);
+            post.Id = id;
 
             if (ModelState.IsValid) {
                 try {
@@ -94,7 +94,7 @@ namespace SlogWeb.Controllers {
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { Id = id });
             }
             return View(post);
         }
