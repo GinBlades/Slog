@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using SlogWeb.FormObjects;
 using AutoMapper;
+using SlogWeb.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,7 +29,12 @@ namespace SlogWeb.Controllers {
 
         [AllowAnonymous]
         public async Task<IActionResult> Index() {
-            return View(await _context.Posts.ToListAsync());
+            var posts = await _context.Posts.ToListAsync();
+            List<PostPublicViewModel> ppvms = new List<PostPublicViewModel>();
+            foreach (var post in posts) {
+                ppvms.Add(_mapper.Map<Post, PostPublicViewModel>(post));
+            }
+            return View(ppvms);
         }
 
         [HttpGet]

@@ -6,5 +6,7 @@ using System.Threading.Tasks;
 
 namespace SlogWeb.Models {
     public class ApplicationUser : IdentityUser {
+        public virtual IEnumerable<Post> Posts { get; set; }
+        public virtual IEnumerable<Comment> Comments { get; set; }
     }
 }
