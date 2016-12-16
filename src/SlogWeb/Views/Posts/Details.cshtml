@@ -1,36 +1,17 @@
-﻿@model SlogWeb.Models.Post
+﻿@model SlogWeb.ViewModels.PostPublicViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Title;
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>Post</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PublishDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PublishDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-    </dl>
+    <h1>@Model.Title</h1>
+    <p>
+        <i>Posted @Model.PublishDate by @Model.Author.UserName</i>
+    </p>
+    <div>@Model.Body</div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
     <a asp-action="Index">Back to List</a>
 </div>
