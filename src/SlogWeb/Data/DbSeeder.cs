@@ -37,13 +37,8 @@ namespace SlogWeb.Data {
         }
 
         private async Task ClearDbAsync() {
-            foreach (var user in _dbContext.Users.ToList()) {
-                _dbContext.Users.Remove(user);
-            }
-
-            foreach (var role in _dbContext.Roles.ToList()) {
-                _dbContext.Roles.Remove(role);
-            }
+            _dbContext.Users.RemoveRange(_dbContext.Users.ToList());
+            _dbContext.Roles.RemoveRange(_dbContext.Roles.ToList());
 
             await _dbContext.SaveChangesAsync();
         }
