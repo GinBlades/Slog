@@ -1,0 +1,15 @@
+﻿@model CommentPublicFormObject
+
+@{ 
+    var id = ViewContext.RouteData.Values["Id"].ToString();
+}
+<h4>New Comment</h4>
+<form asp-controller="Comments" asp-action="Create" asp-route-postId="@id">
+    <input type="hidden" asp-for="RequiredField" />
+    <label asp-for="Name"></label>
+    <input class="form-control" asp-for="Name" />
+
+    <label asp-for="Body"></label>
+    <textarea class="form-control" asp-for="Body"></textarea>
+    <input class="btn btn-primary" type="submit" value="Submit" />
+</form>

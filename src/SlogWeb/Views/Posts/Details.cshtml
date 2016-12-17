@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = Model.Title;
 }
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <a asp-action="Index">Back to List</a>
+</div>
 
 <div>
     <h1>@Model.Title</h1>
@@ -11,7 +15,5 @@
     </p>
     <div>@Model.Body</div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@Html.Partial("_CommentForm", Model.NewComment)

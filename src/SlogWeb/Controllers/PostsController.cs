@@ -44,7 +44,7 @@ namespace SlogWeb.Controllers {
                 return NotFound();
             }
 
-            var post = await _context.Posts.Include(p => p.Author).SingleOrDefaultAsync(p => p.Id == id);
+            var post = await _context.Posts.Include(p => p.Author).Include(p => p.Comments).SingleOrDefaultAsync(p => p.Id == id);
             if (post == null) {
                 return NotFound();
             }

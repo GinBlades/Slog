@@ -1,4 +1,5 @@
-﻿using SlogWeb.Models;
+﻿using SlogWeb.FormObjects;
+using SlogWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,6 @@ namespace SlogWeb.ViewModels {
         public DateTime PublishDate { get; set; }
         public virtual ApplicationUser Author { get; set; }
         public virtual IEnumerable<Comment> Commments { get; set; }
-        public Comment NewComment { get; set; }
+        public CommentPublicFormObject NewComment { get; set; }
     }
 }

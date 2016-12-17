@@ -24,7 +24,7 @@ namespace SlogWeb.Models {
         [ForeignKey("AuthorId")]
         public virtual ApplicationUser Author { get; set; }
 
-        public virtual IEnumerable<Comment> Commments { get; set; }
+        public virtual IEnumerable<Comment> Comments { get; set; }
     }
 
     public enum PostStatus {

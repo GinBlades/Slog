@@ -7,9 +7,12 @@
     sass = require("gulp-sass"),
     uglify = require("gulp-uglify");
 
+var styles = ["ClientSource/StyleSheets/**/*.scss"];
+var scripts = ["ClientSource/JavaScript/**/*.ts"];
+
 gulp.task("tsc", function () {
     var tsProject = tsc.createProject("tsconfig.json");
-    var tsResult = gulp.src("ClientSource/JavaScript/**/*.ts")
+    var tsResult = gulp.src(scripts)
         .pipe(plumber())
         .pipe(tsLint({ formatter: "prose", configuration: "tslint.json" }))
         .pipe(tsLint.report({ emitError: false }))
@@ -17,7 +20,25 @@ gulp.task("tsc", function () {
         .pipe(tsProject());
 
     return tsResult.js
+        .pipe(concat("app.js"))
+        .pipe(uglify())
         .pipe(sourceMaps.write("."))
+        .pipe(gulp.dest("wwwroot/js"));
+});
+
+gulp.task("copySourceMaps", function () {
+    gulp.src([
+        "node_modules/jquery/dist/jquery.min.map"
+    ])
+    .pipe(gulp.dest("wwwroot/js"));
+})
+
+gulp.task("vendorJs", ["copySourceMaps"], function () {
+    gulp.src([
+        "node_modules/jquery/dist/jquery.min.js",
+        "node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js"
+    ])
+        .pipe(concat("vendor.js"))
         .pipe(gulp.dest("wwwroot/js"));
 });
 
@@ -27,7 +48,7 @@ gulp.task("copyFonts", function () {
 });
 
 gulp.task("sass", function () {
-    return gulp.src("ClientSource/StyleSheets/**/*.scss")
+    return gulp.src(styles)
         .pipe(plumber())
         .pipe(sourceMaps.init())
         .pipe(sass({ style: "compressed" }))
@@ -35,8 +56,11 @@ gulp.task("sass", function () {
         .pipe(gulp.dest("wwwroot/css"));
 });
 
-gulp.task("build", ["copyFonts", "sass", "tsc"]);
-
-gulp.task('default', function () {
-    // place code for your default task here
+gulp.task("watch", function () {
+    gulp.watch(styles, ["sass"]);
+    gulp.watch(scripts, ["tsc"]);
 });
+
+gulp.task("build", ["copyFonts", "vendorJs", "sass", "tsc"]);
+
+gulp.task('default', ["build", "watch"]);
