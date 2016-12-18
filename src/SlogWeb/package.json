@@ -3,6 +3,7 @@
   "name": "asp.net",
   "private": true,
   "devDependencies": {
+    "@types/jquery": "^2.0.34",
     "bootstrap-sass": "^3.3.7",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
@@ -16,5 +17,8 @@
     "node-sass": "^4.0.0",
     "tslint": "^4.1.0",
     "typescript": "^2.1.4"
+  },
+  "dependencies": {
+    "@types/jquery": "^2.0.34"
   }
 }

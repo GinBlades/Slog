@@ -6,9 +6,7 @@
 
 @if (SignInManager.IsSignedIn(User)) {
     <li>
-        <form asp-controller="Account" asp-action="LogOff" method="post">
-            <button type="submit">Sign Out</button>
-        </form>
+        <a asp-controller="Account" asp-action="LogOff" data-delete data-return-url="/">Sign Out</a>
     </li>
 } else {
     <li><a asp-controller="Account" asp-action="Register">Register</a></li>

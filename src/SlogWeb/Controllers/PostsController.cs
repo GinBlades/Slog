@@ -105,8 +105,7 @@ namespace SlogWeb.Controllers {
             return View(post);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id) {
             var post = await _context.Posts.SingleOrDefaultAsync(m => m.Id == id);
             _context.Posts.Remove(post);

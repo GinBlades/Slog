@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlogWeb.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,5 +13,13 @@ namespace SlogWeb.FormObjects {
 
         // Honey pot, kind of
         public string RequiredField { get; set; }
+
+        public Comment ToComment() {
+            return new Comment() {
+                Name = Name,
+                Body = Body,
+                Approved = false
+            };
+        }
     }
 }

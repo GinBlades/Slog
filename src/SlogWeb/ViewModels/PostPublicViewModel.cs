@@ -15,5 +15,14 @@ namespace SlogWeb.ViewModels {
         public virtual ApplicationUser Author { get; set; }
         public virtual IEnumerable<Comment> Commments { get; set; }
         public CommentPublicFormObject NewComment { get; set; }
+        public string Summary {
+            get {
+                if (Body == null) {
+                    return null;
+                } else {
+                    return Body.Substring(0, Math.Min(Body.Length, 25));
+                }
+            }
+        }
     }
 }

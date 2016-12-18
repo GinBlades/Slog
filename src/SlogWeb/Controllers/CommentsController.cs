@@ -36,11 +36,7 @@ namespace SlogWeb.Controllers {
         }
 
         private async Task<Comment> CreateWithUserAsync(CommentPublicFormObject cpfo) {
-            var comment = new Comment() {
-                Name = cpfo.Name,
-                Body = cpfo.Body,
-                Approved = false
-            };
+            var comment = cpfo.ToComment();
             var user = await GetCurrentUserAsync();
             if (user != null) {
                 cpfo.Name = user.UserName;

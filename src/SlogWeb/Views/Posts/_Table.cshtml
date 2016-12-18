@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SlogWeb.Models
+@using SlogWeb.ViewModels
+
+@model List<PostPublicViewModel>
+@inject SignInManager<ApplicationUser> SignInManager
+
+<ul class="list-unstyled">
+    @foreach (var item in Model) {
+        <li>
+            <h2>@item.Title</h2>
+            <p>
+                <i>Posted @item.PublishDate by @item.Author.UserName</i>
+            </p>
+            @item.Summary
+            <div class="btn-group">
+                <a class="btn btn-primary" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">Read More</a>
+                @if (SignInManager.IsSignedIn(User)) {
+                    <a class="btn btn-default" asp-controller="Posts" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-danger" asp-controller="Posts" asp-action="Delete" asp-route-id="@item.Id"
+                       data-delete data-confirm="Are you sure you want to delete this?" data-return-url="@Context.Request.Path">Delete</a>
+                }
+            </div>
+        </li>
+    }
+</ul>
