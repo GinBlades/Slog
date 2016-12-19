@@ -9,12 +9,12 @@
     <ol>
         <li>
             <label asp-for="EmailOrUserName"></label>
-            <input asp-for="EmailOrUserName" />
+            <input class="form-control" asp-for="EmailOrUserName" />
             <span asp-validation-for="EmailOrUserName"></span>
         </li>
         <li>
             <label asp-for="Password"></label>
-            <input asp-for="Password" />
+            <input class="form-control" asp-for="Password" />
             <span asp-validation-for="Password"></span>
         </li>
         <li>
@@ -24,7 +24,7 @@
             </label>
         </li>
         <li>
-            <button type="submit">Sign In</button>
+            <button class="btn btn-primary" type="submit">Sign In</button>
         </li>
     </ol>
 </form>

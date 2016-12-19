@@ -15,7 +15,7 @@ using SlogWeb.ViewModels;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SlogWeb.Controllers {
-    [Authorize]
+    [Authorize(Roles = "Administrators")]
     public class PostsController : Controller {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -51,6 +51,7 @@ namespace SlogWeb.Controllers {
 
             return View(_mapper.Map<Post, PostPublicViewModel>(post));
         }
+
         public IActionResult Create() {
             return View(new PostFormObject());
         }

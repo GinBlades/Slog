@@ -8,7 +8,7 @@
 
 <form asp-action="Create">
     <h4>Post</h4>
-    @Html.EditorForModel()
+    @Html.Partial("_Form", Model)
     <input type="submit" value="Create" />
 </form>
 

@@ -45,6 +45,12 @@ namespace SlogWeb.Controllers {
             return View(model);
         }
 
+        [HttpGet, AllowAnonymous]
+        public IActionResult AccessDenied(string returnUrl = null) {
+            return RedirectToAction("Index", "Home");
+        }
+
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register() {

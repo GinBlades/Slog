@@ -8,8 +8,8 @@
 
 <form asp-action="Edit">
     <h4>Post</h4>
-        @Html.EditorForModel()
-        <input type="submit" value="Update" />
+    @Html.Partial("_Form", Model)
+    <input class="btn btn-primary" type="submit" value="Update" />
 </form>
 
 <div>

@@ -1,0 +1,40 @@
+﻿@model PostFormObject
+
+<div asp-validation-summary="All"></div>
+<ol class="list-unstyled">
+    <li>
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input class="form-control" asp-for="Title" />
+            <span asp-validation-for="Title"></span>
+        </div>
+    </li>
+    <li>
+        <div class="form-group">
+            <label asp-for="Slug"></label>
+            <input class="form-control" asp-for="Slug" />
+            <span asp-validation-for="Slug"></span>
+        </div>
+    </li>
+    <li>
+        <div class="form-group">
+            <label asp-for="Body"></label>
+            <input class="form-control" asp-for="Body" />
+            <span asp-validation-for="Body"></span>
+        </div>
+    </li>
+    <li>
+        <div class="form-group">
+            <label asp-for="PublishDate"></label>
+            <input class="form-control" asp-for="PublishDate" />
+            <span asp-validation-for="PublishDate"></span>
+        </div>
+    </li>
+    <li>
+        <div class="form-group">
+            <label asp-for="PostStatus"></label>
+            <input class="form-control" asp-for="PostStatus" />
+            <span asp-validation-for="PostStatus"></span>
+        </div>
+    </li>
+</ol>
