@@ -45,9 +45,11 @@ namespace SlogWeb.Data {
 
         private async Task CreateUsersAsync() {
             var adminRole = "Administrators";
+            var authorsRole = "Authors";
             await _roleManager.CreateAsync(new IdentityRole(adminRole));
             await _roleManager.CreateAsync(new IdentityRole("Moderators"));
             await _roleManager.CreateAsync(new IdentityRole("Members"));
+            await _roleManager.CreateAsync(new IdentityRole(authorsRole));
 
             var adminUser = new ApplicationUser() {
                 UserName = _adminOptions.UserName,
@@ -56,6 +58,7 @@ namespace SlogWeb.Data {
 
             await _userManager.CreateAsync(adminUser, _adminOptions.Password);
             await _userManager.AddToRoleAsync(adminUser, adminRole);
+            await _userManager.AddToRoleAsync(adminUser, authorsRole);
         }
     }
 }

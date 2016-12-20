@@ -18,7 +18,8 @@ namespace SlogWeb.FormObjects {
             return new Comment() {
                 Name = Name,
                 Body = Body,
-                Approved = false
+                Approved = false,
+                CreatedDate = DateTime.Now
             };
         }
     }

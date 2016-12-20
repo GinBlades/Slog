@@ -8,10 +8,13 @@ using SlogWeb.Models;
 using SlogWeb.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SlogWeb.Controllers {
+    [Authorize(Roles = "Administrators,Moderators")]
     public class CommentsController : Controller {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -23,7 +26,18 @@ namespace SlogWeb.Controllers {
             _userManager = userManager;
         }
 
+        public async Task<IActionResult> Index() {
+            var comments = await _db.Comments.Include(c => c.User).ToListAsync();
+            return View(comments);
+        }
+
+        public async Task<IActionResult> Details(int id) {
+            var comment = await _db.Comments.Include(c => c.User).FirstOrDefaultAsync(c => c.Id == id);
+            return View(comment);
+        }
+
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Create(int postId, CommentPublicFormObject cpfo) {
             if (cpfo.RequiredField == null) {
                 var comment = await CreateWithUserAsync(cpfo);
@@ -39,7 +53,8 @@ namespace SlogWeb.Controllers {
             var comment = cpfo.ToComment();
             var user = await GetCurrentUserAsync();
             if (user != null) {
-                cpfo.Name = user.UserName;
+                comment.Name = user.UserName;
+                comment.UserId = user.Id;
                 var roles = await _userManager.GetRolesAsync(user);
                 var adminRoles = new string[] { "Administrators", "Moderators" };
                 if (roles.Intersect(adminRoles).Count() > 0) {

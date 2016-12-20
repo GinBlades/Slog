@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace SlogWeb.Models {
     public class Comment {
+        [Key, Required]
         public int Id { get; set; }
         public string Name { get; set; }
         [Required]
         public string Body { get; set; }
-        public bool Approved { get; set; }
+        public bool Approved { get; set; } = false;
+        [Required]
+        public DateTime CreatedDate { get; set; }
 
         public int? ParentId { get; set; }
         public virtual Comment Parent { get; set; }

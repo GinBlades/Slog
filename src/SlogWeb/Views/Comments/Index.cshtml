@@ -1,0 +1,27 @@
+﻿@model IEnumerable<SlogWeb.Models.Comment>
+<h1>Comments</h1>
+
+<table class="table table-striped">
+    <tr>
+        <th>Name</th>
+        <th>Body</th>
+        <th>Created</th>
+        <th>Approved</th>
+    </tr>
+    @foreach (var comment in Model) {
+        <tr>
+            <td>
+                @if (comment.User != null) {
+                    @comment.User.UserName
+                    <span>(<a href="mailto:@comment.User.Email">@comment.User.Email</a>)</span>
+                } else {
+                    @comment.Name
+                }
+            </td>
+            <td>@comment.Body.Substring(0, Math.Min(@comment.Body.Length, 25))</td>
+            <td>@comment.CreatedDate</td>
+            <td>@comment.Approved</td>
+        </tr>
+    }
+</table>
+

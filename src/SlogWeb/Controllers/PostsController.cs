@@ -15,7 +15,7 @@ using SlogWeb.ViewModels;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SlogWeb.Controllers {
-    [Authorize(Roles = "Administrators")]
+    [Authorize(Roles = "Administrators,Authors")]
     public class PostsController : Controller {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -91,17 +91,13 @@ namespace SlogWeb.Controllers {
             post.Id = id;
 
             if (ModelState.IsValid) {
-                try {
+                if (PostExists(post.Id)) {
                     _context.Update(post);
                     await _context.SaveChangesAsync();
-                } catch (DbUpdateConcurrencyException) {
-                    if (!PostExists(post.Id)) {
-                        return NotFound();
-                    } else {
-                        throw;
-                    }
+                    return RedirectToAction("Details", new { Id = id });
+                } else {
+                    return NotFound();
                 }
-                return RedirectToAction("Details", new { Id = id });
             }
             return View(post);
         }
@@ -117,7 +113,7 @@ namespace SlogWeb.Controllers {
         private bool PostExists(int id) {
             return _context.Posts.Any(e => e.Id == id);
         }
-        
+
         private async Task<ApplicationUser> GetCurrentUserAsync() {
             return await _userManager.GetUserAsync(HttpContext.User);
         }
