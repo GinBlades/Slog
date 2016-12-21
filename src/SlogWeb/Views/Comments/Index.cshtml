@@ -5,6 +5,7 @@
     <tr>
         <th>Name</th>
         <th>Body</th>
+        <th>Post</th>
         <th>Created</th>
         <th>Approved</th>
     </tr>
@@ -18,10 +19,12 @@
                     @comment.Name
                 }
             </td>
-            <td>@comment.Body.Substring(0, Math.Min(@comment.Body.Length, 25))</td>
+            <td>@comment.Post.Title</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@comment.Id">@comment.Body.Substring(0, Math.Min(@comment.Body.Length, 25))</a>
+            </td>
             <td>@comment.CreatedDate</td>
             <td>@comment.Approved</td>
         </tr>
     }
 </table>
-

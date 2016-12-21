@@ -27,17 +27,17 @@ namespace SlogWeb.Controllers {
         }
 
         public async Task<IActionResult> Index() {
-            var comments = await _db.Comments.Include(c => c.User).ToListAsync();
+            var comments = await _db.Comments.Include(c => c.User).Include(c => c.Post).ToListAsync();
             return View(comments);
         }
 
         public async Task<IActionResult> Details(int id) {
-            var comment = await _db.Comments.Include(c => c.User).FirstOrDefaultAsync(c => c.Id == id);
+            var comment = await _db.Comments.Include(c => c.User).Include(c => c.Post).FirstOrDefaultAsync(c => c.Id == id);
             return View(comment);
         }
 
         [HttpPost]
-        [AllowAnonymous]
+        [AllowAnonymous, ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int postId, CommentPublicFormObject cpfo) {
             if (cpfo.RequiredField == null) {
                 var comment = await CreateWithUserAsync(cpfo);
@@ -47,6 +47,23 @@ namespace SlogWeb.Controllers {
             }
 
             return RedirectToAction("Details", "Posts", new { Id = postId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Approve(int id, bool approve = true) {
+            var comment = await _db.Comments.SingleOrDefaultAsync(c => c.Id == id);
+            comment.Approved = approve;
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id) {
+            var comment = await _db.Comments.SingleOrDefaultAsync(c => c.Id == id);
+            _db.Comments.Remove(comment);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         private async Task<Comment> CreateWithUserAsync(CommentPublicFormObject cpfo) {

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using SlogWeb.Models
+@inject SignInManager<ApplicationUser> SignInManager
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -25,10 +28,16 @@
                         <li>
                             <a asp-controller="Posts" asp-action="Index">Posts</a>
                         </li>
-                        <li>
-                            <a asp-controller="Posts" asp-action="Create">New Post</a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User)) {
+                            <li>
+                                <a asp-controller="Posts" asp-action="Create">New Post</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Comments" asp-action="Index">Comments</a>
+                            </li>
+                        }
                     </ul>
+
                     <ul class="nav navbar-nav navbar-right">
                         @await Html.PartialAsync("_LoginMenu")
                     </ul>
