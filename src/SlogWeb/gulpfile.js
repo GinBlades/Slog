@@ -33,10 +33,22 @@ gulp.task("copySourceMaps", function () {
     .pipe(gulp.dest("wwwroot/js"));
 })
 
-gulp.task("vendorJs", ["copySourceMaps"], function () {
+// Using 'base' option allows us to copy the folder with contents.
+gulp.task("copyTinymce", function () {
+    return gulp.src([
+        "node_modules/tinymce/plugins/**/*",
+        "node_modules/tinymce/skins/**/*",
+        "node_modules/tinymce/themes/**/*"
+    ], { base: "node_modules/tinymce" })
+        .pipe(gulp.dest("wwwroot/js"));
+});
+
+gulp.task("vendorJs", ["copySourceMaps", "copyTinymce"], function () {
     gulp.src([
         "node_modules/jquery/dist/jquery.min.js",
-        "node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js"
+        "node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js",
+        "node_modules/tinymce/tinymce.min.js",
+        "node_modules/tinymce/tinymce.jquery.min.js"
     ])
         .pipe(concat("vendor.js"))
         .pipe(gulp.dest("wwwroot/js"));

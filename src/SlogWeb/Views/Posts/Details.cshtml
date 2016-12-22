@@ -13,7 +13,7 @@
     <p>
         <i>Posted @Model.PublishDate by @Model.Author.UserName</i>
     </p>
-    <div>@Model.Body</div>
+    <div>@Html.Raw(Model.Body)</div>
 </div>
 
 @Html.Partial("_CommentForm", Model.NewComment)

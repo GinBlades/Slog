@@ -87,6 +87,10 @@ namespace SlogWeb.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PostFormObject pfo) {
+            if (pfo.AuthorId == null) {
+                var author = await GetCurrentUserAsync();
+                pfo.AuthorId = author.Id;
+            }
             var post = _mapper.Map<PostFormObject, Post>(pfo);
             post.Id = id;
 
