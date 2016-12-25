@@ -1,0 +1,15 @@
+﻿@model SlogWeb.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = Model.UserName;
+}
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<div>
+    <h1>@Model.UserName</h1>
+    <h2>@Model.Email</h2>
+    <p>@string.Join(", ", @Model.RoleNames)</p>
+</div>

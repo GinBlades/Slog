@@ -1,0 +1,17 @@
+﻿@model PostFormObject
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <h4>Post</h4>
+    @Html.Partial("_Form", Model)
+    <input class="btn btn-primary" type="submit" value="Update" />
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
