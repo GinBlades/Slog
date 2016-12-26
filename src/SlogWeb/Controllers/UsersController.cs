@@ -48,21 +48,25 @@ namespace SlogWeb.Controllers {
             return View(new UserViewModel(user, roles, containsAllRoles: false));
         }
 
-        public IActionResult Create() {
-            return View(new RegisterFormObject());
+        public async Task<IActionResult> Create() {
+            var roles = await _context.Roles.ToListAsync();
+            return View(new AdminCreateUserFormObject(null, roles.Select(r => r.Name).ToArray()));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(RegisterFormObject rfo) {
+        public async Task<IActionResult> Create(AdminCreateUserFormObject acufo) {
             if (ModelState.IsValid) {
-                var user = rfo.ToUser();
-                var result = await _userManager.CreateAsync(user, rfo.Password);
+                var user = acufo.ToUser();
+                var result = await _userManager.CreateAsync(user, acufo.Password);
                 if (result.Succeeded) {
+                    await _userManager.AddToRolesAsync(user, acufo.SelectedRoles);
                     return RedirectToAction("Details", new { Id = user.Id });
                 }
             }
-            return View(rfo);
+            var roles = await _context.Roles.ToListAsync();
+            acufo.AvailableRoleNames = roles.Select(r => r.Name);
+            return View(acufo);
         }
 
         public async Task<IActionResult> Edit(string id) {
@@ -74,25 +78,24 @@ namespace SlogWeb.Controllers {
             if (user == null) {
                 return NotFound();
             }
-            return View(new RegisterFormObject(user));
+            return View(new AdminEditUserFormObject(user));
         }
 
-        // RegisterFormObject doesn't work well here. Make new form object, separate password changing.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, RegisterFormObject rfo) {
-            var user = rfo.ToUser();
-            user.Id = id;
+        public async Task<IActionResult> Edit(string id, AdminEditUserFormObject acufo) {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
             
             if (ModelState.IsValid) {
-                if (rfo.Password != null && rfo.ConfirmPassword != null) {
-                    await _userManager.ChangePasswordAsync(user, rfo.Password, rfo.Password);
-                }
-                _context.Update(user);
+                acufo.UpdateUser(ref user);
                 await _context.SaveChangesAsync();
+                // Separate password changing to another action
+                //if (rfo.Password != null && rfo.ConfirmPassword != null) {
+                //    await _userManager.ChangePasswordAsync(user, rfo.Password, rfo.Password);
+                //}
                 return RedirectToAction("Details", new { Id = id });
             }
-            return View(new RegisterFormObject(user));
+            return View(new AdminEditUserFormObject(user));
         }
 
         [HttpDelete]
