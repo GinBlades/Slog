@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using SlogWeb.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using SlogWeb.ViewModels;
+using SlogWeb.FormObjects.Account;
+using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,9 +18,11 @@ namespace SlogWeb.Controllers {
     [Authorize(Roles = "Administrators")]
     public class UsersController : Controller {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UsersController(ApplicationDbContext context) {
+        public UsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager) {
             _context = context;
+            _userManager = userManager;
         }
         // GET: /<controller>/
         public async Task<IActionResult> Index() {
@@ -45,18 +49,20 @@ namespace SlogWeb.Controllers {
         }
 
         public IActionResult Create() {
-            return View(new ApplicationUser());
+            return View(new RegisterFormObject());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ApplicationUser user) {
+        public async Task<IActionResult> Create(RegisterFormObject rfo) {
             if (ModelState.IsValid) {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Details", new { Id = user.Id });
+                var user = rfo.ToUser();
+                var result = await _userManager.CreateAsync(user, rfo.Password);
+                if (result.Succeeded) {
+                    return RedirectToAction("Details", new { Id = user.Id });
+                }
             }
-            return View(user);
+            return View(rfo);
         }
 
         public async Task<IActionResult> Edit(string id) {
@@ -68,18 +74,25 @@ namespace SlogWeb.Controllers {
             if (user == null) {
                 return NotFound();
             }
-            return View(user);
+            return View(new RegisterFormObject(user));
         }
 
+        // RegisterFormObject doesn't work well here. Make new form object, separate password changing.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, ApplicationUser user) {
+        public async Task<IActionResult> Edit(string id, RegisterFormObject rfo) {
+            var user = rfo.ToUser();
+            user.Id = id;
+            
             if (ModelState.IsValid) {
+                if (rfo.Password != null && rfo.ConfirmPassword != null) {
+                    await _userManager.ChangePasswordAsync(user, rfo.Password, rfo.Password);
+                }
                 _context.Update(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", new { Id = id });
             }
-            return View(user);
+            return View(new RegisterFormObject(user));
         }
 
         [HttpDelete]

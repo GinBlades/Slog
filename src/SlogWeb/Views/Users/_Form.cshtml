@@ -1,40 +1,25 @@
-﻿@model PostFormObject
+﻿@model RegisterFormObject
 
 <div asp-validation-summary="All"></div>
-<ol class="list-unstyled">
+<ol>
     <li>
-        <div class="form-group">
-            <label asp-for="Title"></label>
-            <input class="form-control" asp-for="Title" />
-            <span asp-validation-for="Title"></span>
-        </div>
+        <label asp-for="Email"></label>
+        <input class="form-control" asp-for="Email" />
+        <span asp-validation-for="Email"></span>
     </li>
     <li>
-        <div class="form-group">
-            <label asp-for="Slug"></label>
-            <input class="form-control" asp-for="Slug" />
-            <span asp-validation-for="Slug"></span>
-        </div>
+        <label asp-for="UserName"></label>
+        <input class="form-control" asp-for="UserName" />
+        <span asp-validation-for="UserName"></span>
     </li>
     <li>
-        <div class="form-group">
-            <label asp-for="Body"></label>
-            <textarea class="tinymce" asp-for="Body"></textarea>
-            <span asp-validation-for="Body"></span>
-        </div>
+        <label asp-for="Password"></label>
+        <input class="form-control" asp-for="Password" />
+        <span asp-validation-for="Password"></span>
     </li>
     <li>
-        <div class="form-group">
-            <label asp-for="PublishDate"></label>
-            <input class="form-control" asp-for="PublishDate" />
-            <span asp-validation-for="PublishDate"></span>
-        </div>
-    </li>
-    <li>
-        <div class="form-group">
-            <label asp-for="PostStatus"></label>
-            <input class="form-control" asp-for="PostStatus" />
-            <span asp-validation-for="PostStatus"></span>
-        </div>
+        <label asp-for="ConfirmPassword"></label>
+        <input class="form-control" asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword"></span>
     </li>
 </ol>
