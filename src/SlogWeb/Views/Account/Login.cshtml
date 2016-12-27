@@ -6,7 +6,7 @@
 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
     <h3>Sign in.</h3>
     <div asp-validation-summary="All"></div>
-    <ol>
+    <ol class="list-unstyled">
         <li>
             <label asp-for="EmailOrUserName"></label>
             <input class="form-control" asp-for="EmailOrUserName" />

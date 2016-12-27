@@ -24,6 +24,8 @@ namespace SlogWeb.FormObjects {
             set { _slug = value; }
         }
 
+        public string Summary { get; set; }
+
         [Required]
         public string Body { get; set; }
         public DateTime PublishDate { get; set; } = DateTime.Now;

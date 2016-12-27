@@ -12,7 +12,7 @@
             <p>
                 <i>Posted @item.PublishDate by @item.Author.UserName</i>
             </p>
-            @item.Summary
+            @Html.Raw(item.Summary)
             <div class="btn-group">
                 <a class="btn btn-primary" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">Read More</a>
                 @if (SignInManager.IsSignedIn(User)) {

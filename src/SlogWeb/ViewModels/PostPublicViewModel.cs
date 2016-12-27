@@ -11,18 +11,23 @@ namespace SlogWeb.ViewModels {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
+
+        private string _summary;
+        public string Summary {
+            get {
+                if (_summary == null && Body != null) {
+                    return Body.Substring(0, Math.Min(Body.Length, 25));
+                } else {
+                    return _summary;
+                }
+            }
+            set {
+                _summary = value;
+            }
+        }
         public DateTime PublishDate { get; set; }
         public virtual ApplicationUser Author { get; set; }
         public virtual IEnumerable<Comment> Commments { get; set; }
         public CommentPublicFormObject NewComment { get; set; }
-        public string Summary {
-            get {
-                if (Body == null) {
-                    return null;
-                } else {
-                    return Body.Substring(0, Math.Min(Body.Length, 25));
-                }
-            }
-        }
     }
 }

@@ -13,6 +13,7 @@ namespace SlogWeb.Models {
         public string Title { get; set; }
         [Required]
         public string Slug { get; set; }
+        public string Summary { get; set; }
         [Required]
         public string Body { get; set; }
         [Required]

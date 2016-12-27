@@ -18,6 +18,13 @@
     </li>
     <li>
         <div class="form-group">
+            <label asp-for="Summary"></label>
+            <input class="form-control" asp-for="Summary" />
+            <span asp-validation-for="Summary"></span>
+        </div>
+    </li>
+    <li>
+        <div class="form-group">
             <label asp-for="Body"></label>
             <textarea class="tinymce" asp-for="Body"></textarea>
             <span asp-validation-for="Body"></span>
