@@ -9,16 +9,19 @@
 <form asp-action="Edit">
     <h4>User</h4>
     <div asp-validation-summary="All"></div>
-    <ol>
-        <li>
+    <ol class="list-unstyled">
+        <li class="form-group">
             <label asp-for="Email"></label>
             <input class="form-control" asp-for="Email" />
             <span asp-validation-for="Email"></span>
         </li>
-        <li>
+        <li class="form-group">
             <label asp-for="UserName"></label>
             <input class="form-control" asp-for="UserName" />
             <span asp-validation-for="UserName"></span>
+        </li>
+        <li>
+            @Html.Partial("_RoleCheckboxes", Model)
         </li>
     </ol>
     <input class="btn btn-primary" type="submit" value="Update" />

@@ -1,0 +1,16 @@
+﻿@model UserWithRolesFormObject
+
+<label asp-for="AvailableRoleNames"></label>
+<ul class="list-inline">
+    @foreach (var roleName in Model.AvailableRoleNames) {
+        <li>
+            <label for="Roles_@roleName">
+                @{
+                    var selected = Model.SelectedRoles.Contains(roleName);
+                }
+                <input id="Roles_@roleName" name="SelectedRoles" type="checkbox" value="@roleName" checked="@selected" />
+                @roleName
+            </label>
+        </li>
+    }
+</ul>

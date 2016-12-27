@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace SlogWeb.FormObjects.Account {
-    public class BaseUserFormObject {
+    public abstract class BaseUserFormObject {
         public BaseUserFormObject() { }
 
         public BaseUserFormObject(ApplicationUser user) {

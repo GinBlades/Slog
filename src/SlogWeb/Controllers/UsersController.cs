@@ -74,21 +74,24 @@ namespace SlogWeb.Controllers {
                 return NotFound();
             }
 
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.Include(u => u.Roles).SingleOrDefaultAsync(u => u.Id == id);
+            var roles = await _context.Roles.ToListAsync();
             if (user == null) {
                 return NotFound();
             }
-            return View(new AdminEditUserFormObject(user));
+            return View(new AdminEditUserFormObject(user, roles));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, AdminEditUserFormObject acufo) {
+        public async Task<IActionResult> Edit(string id, AdminEditUserFormObject aeufo) {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
             
             if (ModelState.IsValid) {
-                acufo.UpdateUser(ref user);
-                await _context.SaveChangesAsync();
+                aeufo.UpdateUser(ref user);
+                await _context.SaveChangesAsync();                
+                await UpdateRoles(user, aeufo.SelectedRoles);
+
                 // Separate password changing to another action
                 //if (rfo.Password != null && rfo.ConfirmPassword != null) {
                 //    await _userManager.ChangePasswordAsync(user, rfo.Password, rfo.Password);
@@ -96,6 +99,12 @@ namespace SlogWeb.Controllers {
                 return RedirectToAction("Details", new { Id = id });
             }
             return View(new AdminEditUserFormObject(user));
+        }
+
+        private async Task UpdateRoles(ApplicationUser user, IEnumerable<string> selectedRoles) {
+            var pastRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, pastRoles.Except(selectedRoles));
+            await _userManager.AddToRolesAsync(user, selectedRoles.Except(pastRoles));
         }
 
         [HttpDelete]
