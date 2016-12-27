@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +25,9 @@ namespace SlogWeb {
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-            builder.AddUserSecrets();
+            if (env.IsDevelopment()) {
+                builder.AddUserSecrets();
+            }
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -56,6 +59,12 @@ namespace SlogWeb {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+            }
+
+            if (env.IsProduction()) {
+                app.UseForwardedHeaders(new ForwardedHeadersOptions {
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                });
             }
 
             app.UseStaticFiles();
