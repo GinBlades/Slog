@@ -17,6 +17,18 @@ Also save Admin information:
     Admin:Email "test@example.com"
     Admin:Password "SecretPassword"
 
+For production, use an `appsettings.Production.json` file:
+
+    {
+        "ConnectionStrings": {
+            "DefaultConnection": "connection"
+        }, "Admin": {
+            "Username": "adminUser",
+            "Password": "adminPassword",
+            "Email": "admin@example.com"
+        }
+    }
+
 ## Renaming Solution
 
 Some files and namespaces within files will need to be renamed.
