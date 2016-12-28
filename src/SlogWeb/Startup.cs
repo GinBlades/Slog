@@ -55,6 +55,7 @@ namespace SlogWeb {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DbSeeder dbSeeder) {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddFile("logs/slog.log");
 
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();

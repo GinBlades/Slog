@@ -29,7 +29,8 @@
     "Microsoft.AspNetCore.Razor.Tools": {
       "version": "1.1.0-preview4-final",
       "type": "build"
-    }
+    },
+    "Serilog.Extensions.Logging.File": "1.0.0"
   },
   "tools": {
     "Microsoft.AspNetCore.Razor.Tools": "1.1.0-preview4-final",
