@@ -32,6 +32,12 @@
     </li>
     <li>
         <div class="form-group">
+            <label asp-for="FeaturedImageFile"></label>
+            <input type="file" asp-for="FeaturedImageFile" />
+        </div>
+    </li>
+    <li>
+        <div class="form-group">
             <label asp-for="PublishDate"></label>
             <input class="form-control" asp-for="PublishDate" />
             <span asp-validation-for="PublishDate"></span>

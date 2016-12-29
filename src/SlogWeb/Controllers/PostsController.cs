@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using SlogWeb.FormObjects;
 using AutoMapper;
 using SlogWeb.ViewModels;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,11 +23,13 @@ namespace SlogWeb.Controllers {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly IHostingEnvironment _env;
 
-        public PostsController(UserManager<ApplicationUser> userManager, ApplicationDbContext context, IMapper mapper) {
+        public PostsController(UserManager<ApplicationUser> userManager, ApplicationDbContext context, IMapper mapper, IHostingEnvironment env) {
             _userManager = userManager;
             _context = context;
             _mapper = mapper;
+            _env = env;
         }
 
         [AllowAnonymous]
@@ -67,6 +72,9 @@ namespace SlogWeb.Controllers {
                 var post = _mapper.Map<PostFormObject, Post>(pfo);
                 _context.Add(post);
                 await _context.SaveChangesAsync();
+                if (pfo.FeaturedImageFile != null) {
+                    await UploadFile(post.Id, pfo.FeaturedImageFile);
+                }
                 return RedirectToAction("Index");
             }
             return View(pfo);
@@ -96,6 +104,9 @@ namespace SlogWeb.Controllers {
 
             if (ModelState.IsValid) {
                 if (PostExists(post.Id)) {
+                    if (pfo.FeaturedImageFile != null) {
+                        await UploadFile(post.Id, pfo.FeaturedImageFile);
+                    }
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Details", new { Id = id });
@@ -120,6 +131,14 @@ namespace SlogWeb.Controllers {
 
         private async Task<ApplicationUser> GetCurrentUserAsync() {
             return await _userManager.GetUserAsync(HttpContext.User);
+        }
+
+        private async Task UploadFile(int id, IFormFile file) {
+            var fileName = $"{_env.ContentRootPath}/wwwroot/uploads/{id}/{file.FileName}";
+            Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+            using (var stream = new FileStream(fileName, FileMode.Create)) {
+                await file.CopyToAsync(stream);
+            }
         }
     }
 }

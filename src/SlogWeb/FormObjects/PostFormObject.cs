@@ -1,4 +1,5 @@
-﻿using SlogWeb.Models;
+﻿using Microsoft.AspNetCore.Http;
+using SlogWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -32,5 +33,7 @@ namespace SlogWeb.FormObjects {
         [Required]
         public PostStatus PostStatus { get; set; }
         public string AuthorId { get; set; }
+
+        public IFormFile FeaturedImageFile { get; set; }
     }
 }

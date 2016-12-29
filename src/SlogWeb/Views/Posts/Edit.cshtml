@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-<form asp-action="Edit">
+<form asp-action="Edit" enctype="multipart/form-data">
     <h4>Post</h4>
     @Html.Partial("_Form", Model)
     <input class="btn btn-primary" type="submit" value="Update" />
