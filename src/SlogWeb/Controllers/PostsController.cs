@@ -34,7 +34,7 @@ namespace SlogWeb.Controllers {
 
         [AllowAnonymous]
         public async Task<IActionResult> Index() {
-            var posts = await _context.Posts.Include(p => p.Author).ToListAsync();
+            var posts = await _context.Posts.Include(p => p.Author).OrderByDescending(p => p.PublishDate).ToListAsync();
             List<PostPublicViewModel> ppvms = new List<PostPublicViewModel>();
             foreach (var post in posts) {
                 ppvms.Add(_mapper.Map<Post, PostPublicViewModel>(post));
@@ -44,12 +44,12 @@ namespace SlogWeb.Controllers {
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int? id) {
-            if (id == null) {
+        public async Task<IActionResult> Details(DateTime date, string slug) {
+            if (slug == null) {
                 return NotFound();
             }
 
-            var post = await _context.Posts.Include(p => p.Author).Include(p => p.Comments).SingleOrDefaultAsync(p => p.Id == id);
+            var post = await _context.Posts.Include(p => p.Author).Include(p => p.Comments).SingleOrDefaultAsync(p => p.Slug == slug);
             if (post == null) {
                 return NotFound();
             }

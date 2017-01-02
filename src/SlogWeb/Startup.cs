@@ -47,6 +47,7 @@ namespace SlogWeb {
 
             services.AddAutoMapper();
             services.AddSingleton<DbSeeder>();
+            services.AddSingleton<AssetFileHash>();
 
             services.AddMvc();
         }
@@ -75,7 +76,7 @@ namespace SlogWeb {
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "new_comment",
-                    template: "comments/{postId}",
+                    template: "comments/{postSlug}",
                     defaults: new { controller = "Comments", action = "Create" }
                 );
                 routes.MapRoute(
@@ -91,6 +92,14 @@ namespace SlogWeb {
                     template: "{controller}/new",
                     defaults: new { action = "Create" }
                 );
+                routes.MapRoute(
+                    name: "post_actions",
+                    template: "posts/{id:int}/{action}",
+                    defaults: new { controller = "Posts", action = "Edit" });
+                routes.MapRoute(
+                    name: "post_details",
+                    template: "posts/{date}/{slug}",
+                    defaults: new { controller = "Posts", action = "Details" });
                 routes.MapRoute(
                     name: "details",
                     template: "{controller}/{id}",

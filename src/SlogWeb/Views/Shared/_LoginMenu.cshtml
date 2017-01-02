@@ -5,7 +5,7 @@
 
 @if (SignInManager.IsSignedIn(User)) {
     <li>
-        <a asp-controller="Account" asp-action="LogOff" data-delete data-return-url="/">Sign Out</a>
+        <a asp-controller="Account" asp-action="LogOff" data-delete data-return-url="@Url.Action("Index", "Home")">Sign Out</a>
     </li>
 } else {
     <li><a asp-controller="Account" asp-action="Register">Register</a></li>

@@ -14,7 +14,7 @@
             </p>
             @Html.Raw(item.Summary)
             <div class="btn-group">
-                <a class="btn btn-primary" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">Read More</a>
+                <a class="btn btn-primary" asp-controller="Posts" asp-action="Details" asp-route-date="@item.PublishString" asp-route-slug="@item.Slug">Read More</a>
                 @if (SignInManager.IsSignedIn(User)) {
                     <a class="btn btn-default" asp-controller="Posts" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a class="btn btn-danger" asp-controller="Posts" asp-action="Delete" asp-route-id="@item.Id"

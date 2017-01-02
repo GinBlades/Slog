@@ -26,6 +26,13 @@ namespace SlogWeb.Models {
         public virtual ApplicationUser Author { get; set; }
 
         public virtual IEnumerable<Comment> Comments { get; set; }
+
+        [NotMapped]
+        public string PublishString {
+            get {
+                return PublishDate != null ? PublishDate.ToString("dd-MM-yyyy") : null;
+            }
+        }
     }
 
     public enum PostStatus {

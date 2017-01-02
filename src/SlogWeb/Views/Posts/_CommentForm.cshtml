@@ -1,10 +1,10 @@
 ﻿@model CommentPublicFormObject
 
 @{ 
-    var id = ViewContext.RouteData.Values["Id"].ToString();
+    var slug = ViewContext.RouteData.Values["Slug"].ToString();
 }
 <h4>New Comment</h4>
-<form asp-controller="Comments" asp-action="Create" asp-route-postId="@id">
+<form asp-controller="Comments" asp-action="Create" asp-route-postSlug="@slug">
     <input type="hidden" asp-for="RequiredField" />
     <label asp-for="Name"></label>
     <input class="form-control" asp-for="Name" />

@@ -11,6 +11,7 @@ namespace SlogWeb.ViewModels {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
+        public string Slug { get; set; }
 
         private string _summary;
         public string Summary {
@@ -29,5 +30,7 @@ namespace SlogWeb.ViewModels {
         public virtual ApplicationUser Author { get; set; }
         public virtual IEnumerable<Comment> Commments { get; set; }
         public CommentPublicFormObject NewComment { get; set; }
+
+        public string PublishString { get; set; }
     }
 }

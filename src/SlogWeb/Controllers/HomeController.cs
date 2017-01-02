@@ -25,7 +25,7 @@ namespace SlogWeb.Controllers {
         }
         // GET: /<controller>/
         public async Task<IActionResult> Index() {
-            var posts = await _context.Posts.Include(p => p.Author).ToListAsync();
+            var posts = await _context.Posts.Include(p => p.Author).OrderByDescending(p => p.PublishDate).ToListAsync();
             List<PostPublicViewModel> ppvms = new List<PostPublicViewModel>();
             foreach (var post in posts) {
                 ppvms.Add(_mapper.Map<Post, PostPublicViewModel>(post));

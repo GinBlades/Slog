@@ -38,15 +38,15 @@ namespace SlogWeb.Controllers {
 
         [HttpPost]
         [AllowAnonymous, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int postId, CommentPublicFormObject cpfo) {
-            if (cpfo.RequiredField == null) {
+        public async Task<IActionResult> Create(string postSlug, CommentPublicFormObject cpfo) {
+            var post = await _db.Posts.SingleOrDefaultAsync(p => p.Slug == postSlug);
+            if (ModelState.IsValid && string.IsNullOrWhiteSpace(cpfo.RequiredField) && post != null) {
                 var comment = await CreateWithUserAsync(cpfo);
-                comment.PostId = postId;
+                comment.PostId = post.Id;
                 _db.Comments.Add(comment);
                 await _db.SaveChangesAsync();
             }
-
-            return RedirectToAction("Details", "Posts", new { Id = postId });
+            return RedirectToAction("Details", "Posts", new { Slug = post.Slug, Date = post.PublishString });
         }
 
         [HttpPost]
