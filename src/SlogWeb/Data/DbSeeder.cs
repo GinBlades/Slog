@@ -1,4 +1,5 @@
 ﻿using Castle.Core.Configuration;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,19 +18,26 @@ namespace SlogWeb.Data {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly AdminOptions _adminOptions;
+        private readonly IHostingEnvironment _env;
 
-        public DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IOptions<AdminOptions> adminOptions) {
+        public DbSeeder(
+            ApplicationDbContext dbContext,
+            RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager,
+            IOptions<AdminOptions> adminOptions,
+            IHostingEnvironment env) {
             _dbContext = dbContext;
             _roleManager = roleManager;
             _userManager = userManager;
             _adminOptions = adminOptions.Value;
+            _env = env;
         }
 
         public async Task SeedAsync() {
             _dbContext.Database.EnsureCreated();
 
             // Clear database when needed.
-            // await ClearDbAsync();
+            await ClearDbAsync();
 
             if (await _dbContext.Users.CountAsync() == 0) {
                 await CreateUsersAsync();
@@ -37,6 +45,13 @@ namespace SlogWeb.Data {
         }
 
         private async Task ClearDbAsync() {
+            // Do not run this in production
+            if (_env.EnvironmentName != "Development") {
+                return;
+            }
+            _dbContext.Comments.RemoveRange(_dbContext.Comments.ToList());
+            _dbContext.Posts.RemoveRange(_dbContext.Posts.ToList());
+            _dbContext.UserRoles.RemoveRange(_dbContext.UserRoles.ToList());
             _dbContext.Users.RemoveRange(_dbContext.Users.ToList());
             _dbContext.Roles.RemoveRange(_dbContext.Roles.ToList());
 
