@@ -71,7 +71,16 @@ namespace SlogWeb.Data {
                 Email = _adminOptions.Email
             };
 
-            await _userManager.CreateAsync(adminUser, _adminOptions.Password);
+            var createResult = await _userManager.CreateAsync(adminUser, _adminOptions.Password);
+
+            // CreateAsync may fail silently unless this is checked.
+            // http://stackoverflow.com/questions/33074990/why-would-createasyncuser-password-sometimes-fail-identity-v2-mvc5
+            if (!createResult.Succeeded) {
+                var exceptionText = createResult.Errors.Aggregate("User Creation Failed", (current, error) => {
+                    return current + $" - {error.Code}: {error.Description}";
+                });
+            }
+
             await _userManager.AddToRoleAsync(adminUser, adminRole);
             await _userManager.AddToRoleAsync(adminUser, authorsRole);
         }
