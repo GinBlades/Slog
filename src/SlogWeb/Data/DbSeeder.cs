@@ -37,7 +37,7 @@ namespace SlogWeb.Data {
             _dbContext.Database.EnsureCreated();
 
             // Clear database when needed.
-            await ClearDbAsync();
+            // await ClearDbAsync();
 
             if (await _dbContext.Users.CountAsync() == 0) {
                 await CreateUsersAsync();

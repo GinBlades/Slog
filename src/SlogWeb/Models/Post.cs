@@ -30,7 +30,7 @@ namespace SlogWeb.Models {
         [NotMapped]
         public string PublishString {
             get {
-                return PublishDate != null ? PublishDate.ToString("dd-MM-yyyy") : null;
+                return PublishDate != null ? PublishDate.ToString("yyyy-MM-dd") : null;
             }
         }
     }
