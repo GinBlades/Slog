@@ -78,6 +78,7 @@
     },
 
     "scripts": {
-        "prepublish": [ "npm install", "npm run build" ]
+        "prepublish": [ "npm install", "npm run build", "dotnet ef database update --environment Production" ],
+        "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
     }
 }

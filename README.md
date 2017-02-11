@@ -29,6 +29,10 @@ For production, use an `appsettings.Production.json` file:
         }
     }
 
+A proper connection string for SQL Server, if you are connecting to a local database, in the `.json` file might look like:
+
+	"DefaultConnection": "Server=.\\MSSQLSERVER,1433;Initial Catalog=Slog;User ID=[username];Password=[password];Connection Timeout=30;"
+
 ## Renaming Solution
 
 Some files and namespaces within files will need to be renamed.

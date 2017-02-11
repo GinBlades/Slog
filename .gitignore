@@ -1,3 +1,5 @@
+.vscode/
+
 **/wwwroot/*
 !**/wwwroot/.keep
 
