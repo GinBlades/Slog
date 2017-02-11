@@ -25,7 +25,7 @@ namespace SlogWeb.Models {
         [ForeignKey("AuthorId")]
         public virtual ApplicationUser Author { get; set; }
 
-        public virtual IEnumerable<Comment> Comments { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
 
         [NotMapped]
         public string PublishString {
