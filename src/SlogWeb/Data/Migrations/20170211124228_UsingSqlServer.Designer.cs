@@ -9,19 +9,18 @@ using SlogWeb.Models;
 namespace SlogWeb.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20161217031028_AddComments")]
-    partial class AddComments
+    [Migration("20170211124228_UsingSqlServer")]
+    partial class UsingSqlServer
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752");
+                .HasAnnotation("ProductVersion", "1.0.2")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -35,7 +34,6 @@ namespace SlogWeb.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
-                        .IsUnique()
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
@@ -107,6 +105,8 @@ namespace SlogWeb.Data.Migrations
 
                     b.HasIndex("RoleId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("AspNetUserRoles");
                 });
 
@@ -127,8 +127,7 @@ namespace SlogWeb.Data.Migrations
 
             modelBuilder.Entity("SlogWeb.Models.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
                     b.Property<int>("AccessFailedCount");
 
@@ -185,7 +184,10 @@ namespace SlogWeb.Data.Migrations
                     b.Property<string>("Body")
                         .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<int?>("ParentId");
 
@@ -221,6 +223,8 @@ namespace SlogWeb.Data.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired();
+
+                    b.Property<string>("Summary");
 
                     b.Property<string>("Title")
                         .IsRequired();
